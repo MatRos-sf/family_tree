@@ -1,0 +1,8 @@
+<!-- person_node.html -->
+<div class="person">
+    <p>{{ person.name }} {{ person.second_name }}</p>
+    <p>Birth date: {{ person.birth_date }}</p>
+    {% if person.death_date %}
+    <p>Death date: {{ person.death_date }}</p>
+    {% endif %}
+</div>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!-- family_tree.html -->
+{% for person in family_tree %}
+    {% include "member/person_node.html" with person=person %}
+    {% if person.mother %}
+        <div class="relation mother">
+            <p>Mother:</p>
+            {% include "member/person_node.html" with person=person.mother %}
+        </div>
+    {% endif %}
+    {% if person.father %}
+        <div class="relation father">
+            <p>Father:</p>
+            {% include "member/person_node.html" with person=person.father %}
+        </div>
+    {% endif %}
+    <div class="relation children">
+        <p>Children:</p>
+        {% for child in person.mother_of_children.all %}
+            {% include "member/person_node.html" with person=child %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'main.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="tree">
+    <ul>
+      {% for member in family_tree %}
+        <li>
+          <a href="#">{{ member.name }} {{ member.second_name }}</a>
+          {% if member.mother_of_children.exists %}
+            <ul>
+              {% for child in member.mother_of_children.all %}
+                <li>
+                  <a href="#">{{ child.name }} {{ child.second_name }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</body>
+</html>
