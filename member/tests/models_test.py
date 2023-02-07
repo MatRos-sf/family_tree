@@ -135,3 +135,4 @@ class PersonTest(TestCase):
         mother.save()
 
         self.assertEqual(len(probatan.grandparents_mother_side()), 2)
+

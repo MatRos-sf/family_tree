@@ -2,3 +2,4 @@ venv
 .idea
 db.*
 */migrations/0*
+*/migrations/__pycache__
