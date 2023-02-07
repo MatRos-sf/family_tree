@@ -122,4 +122,16 @@ class PersonTest(TestCase):
         create_fake_person_payload(nos=True)
         self.assertEqual(proband.siblings().count(), 0)
 
+    def test_check_grandparents(self):
+        #only grandma
+        grandma = Person.objects.create(**create_fake_person_payload())
+        mother = Person.objects.create(**create_fake_person_payload(mother=grandma))
+        probatan = Person.objects.create(**create_fake_person_payload(mother=mother))
 
+        self.assertEqual(len(probatan.grandparents_mother_side()), 1)
+        # grandma and grandpa
+        grandpa = Person.objects.create(**create_fake_person_payload())
+        mother.father = grandpa
+        mother.save()
+
+        self.assertEqual(len(probatan.grandparents_mother_side()), 2)

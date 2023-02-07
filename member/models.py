@@ -38,6 +38,29 @@ class Person(models.Model):
     def half_siblings(self):
         ...
 
+    def grandparents_mother_side(self):
+        """
+        Grandparents mother side
+        """
+        grandparents = []
+        if self.mother:
+            grandma = self.mother.mother
+            grandpa = self.mother.father
+            if grandma:     grandparents.append(grandma)
+            if grandpa:     grandparents.append(grandpa)
+        return grandparents
+
+    def grandparents_father_side(self):
+        """
+        Grandparents father side
+        """
+        grandparents = []
+        if self.father:
+            grandma = self.mother.mother
+            grandpa = self.mother.father
+            if grandma:     grandparents.append(grandma)
+            if grandpa:     grandparents.append(grandpa)
+        return grandparents
 
 #Probant: w genealogii to osoba: która zajmuje centralne miejsce na tablicy genealogicznej, lub dla której
 # oblicza się stopień pokrewieństwa, lub wobec której określa się nazwę relacji rodzinnej. w genetyce – osoba, która jest przedmiotem badania
