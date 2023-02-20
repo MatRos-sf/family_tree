@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 
 class Person(models.Model):
@@ -32,6 +33,9 @@ class Person(models.Model):
     def __str__(self):
         #return f"{self.name} {self.second_name}"
         return self.aka()
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'pk': self.pk})
 
     def clean(self):
         if self.is_oldest_ancestor:

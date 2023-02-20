@@ -1,7 +1,29 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import CreateView, DetailView, DeleteView
+from django.urls import reverse_lazy
 
 from .models import Person
+from .forms import PersonForm
+
+## CRUD
+class CreatePersonView(CreateView):
+    model = Person
+    form_class = PersonForm
+    template_name = 'member/member_create.html'
+
+class DetailPersonView(DetailView):
+    model = Person
+    template_name = 'member/member_detail.html'
+
+class DeletePersonView(DeleteView):
+
+    model = Person
+    success_url = reverse_lazy('check')
+
+
+
+
 
 
 def view_family_tree(request, person_id):
