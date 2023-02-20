@@ -19,7 +19,8 @@ class DetailPersonView(DetailView):
 class DeletePersonView(DeleteView):
 
     model = Person
-    success_url = reverse_lazy('check')
+    success_url = reverse_lazy('home')
+    template_name = 'member/member_confirm_delete.html'
 
 
 
@@ -29,6 +30,9 @@ class DeletePersonView(DeleteView):
 def view_family_tree(request, person_id):
     person = get_object_or_404(Person, id=person_id)
     return render(request, 'member/family_tree.html', {'family_tree': [person]})
+
+def home(request):
+    return HttpResponse("<h1>I like.</h1>")
 
 def find_oldest_ancestor(person):
 
