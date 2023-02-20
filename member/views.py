@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import CreateView, DetailView, DeleteView
+from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 from .models import Person
@@ -21,6 +21,12 @@ class DeletePersonView(DeleteView):
     model = Person
     success_url = reverse_lazy('home')
     template_name = 'member/member_confirm_delete.html'
+
+class UpdatePersonView(UpdateView):
+
+    model = Person
+    form_class = PersonForm
+    template_name = 'member/member_create.html'
 
 
 
