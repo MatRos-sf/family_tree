@@ -6,6 +6,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('tree/<int:person_id>/', views.view_family_tree, name='tree'),
     path('check/', views.check_oldest_ancestor, name='check'),
+    path('search/', views.SearchResultView.as_view() , name='search_results'),
+
 
     # CRUD
     path('create/', views.CreatePersonView.as_view(), name='create'),

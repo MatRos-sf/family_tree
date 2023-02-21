@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
 from django.urls import reverse_lazy
+from django.db.models import Q
+
 
 from .models import Person
 from .forms import PersonForm
@@ -29,16 +31,22 @@ class UpdatePersonView(UpdateView):
     template_name = 'member/member_create.html'
 
 
-
-
-
-
 def view_family_tree(request, person_id):
     person = get_object_or_404(Person, id=person_id)
     return render(request, 'member/family_tree.html', {'family_tree': [person]})
 
 def home(request):
-    return HttpResponse("<h1>I like.</h1>")
+    return render(request, "member/home_page.html")
+
+class SearchResultView(ListView):
+
+    model = Person
+    template_name = 'member/search_result.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        object_list = Person.objects.filter(Q(name__icontains=query) | Q(second_name__icontains=query))
+        return object_list
 
 def find_oldest_ancestor(person):
 
@@ -56,6 +64,12 @@ def find_oldest_ancestor(person):
     return oldest
 
 def check_oldest_ancestor(request):
+
+    # Check is Person on db
+    if Person.objects.count() == 0:
+        text = "We don't have any person on our Database! Please add."
+        return HttpResponse(text)
+
     try:
         person = Person.objects.get(is_oldest_ancestor=True)
     except ObjectDoesNotExist:

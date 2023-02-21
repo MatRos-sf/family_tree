@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Person(models.Model):
@@ -29,6 +30,7 @@ class Person(models.Model):
     blood_main_family = models.BooleanField(default=True)
 
     is_oldest_ancestor = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         #return f"{self.name} {self.second_name}"
@@ -92,6 +94,20 @@ class Person(models.Model):
                 break
 
         return aka_text
+
+    def count_children(self):
+        children = self.father_of_children.count()
+        return children
+
+    def count_grandchildren(self):
+        children = self.father_of_children.all()
+        grandchildren = 0
+        for child in children:
+            grandchildren += child.count_children()
+
+        return grandchildren
+
+
 
 
 
