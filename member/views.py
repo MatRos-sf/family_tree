@@ -36,7 +36,8 @@ def view_family_tree(request, person_id):
     return render(request, 'member/family_tree.html', {'family_tree': [person]})
 
 def home(request):
-    return render(request, "member/home_page.html")
+    last_create_members = Person.objects.order_by('-created')[:5]
+    return render(request, "member/home_page.html", {'last_create_members': last_create_members})
 
 class SearchResultView(ListView):
 

@@ -1,49 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Witajcie w rodzinie {{ family }}</h1>
-<br>
-<br>
-<h3>Odnajdź swoich przodków </h3>
-<form action="{% url 'search_results' %}" method="get">
-    <label for="site-search">Search the site:</label>
-    <input type="search" id="site-search" name="q" placeholder="Name or second name...">
+{% extends "member/base.html" %}
+{% load own_tags %}
 
-    <button>Search</button>
-</form>
-<br>
-<br>
-<h3>Bądź na bierząco: </h3>
-<br>
-<h4>Dzisiaj imieniny obchodzi: </h4>
-<p>Someone</p>
-<br>
-<h4>Rocznica śmierci</h4>
-<p>Someone</p>
+{% block content %}
+    <h1>Witajcie w rodzinie {{ family }}</h1>
+    <br>
+    <br>
+    <h3>Odnajdź swoich przodków </h3>
+    <form action="{% url 'search_results' %}" method="get">
+        <label for="site-search">Search the site:</label>
+        <input type="search" id="site-search" name="q" placeholder="Name or second name...">
 
-<h3>Ostatnio dodani</h3>
-<p>1. Someone</p>
-<p>2. Someone</p>
-<p>3. Someone</p>
-<p>4. Someone</p>
-<p>5. Someone</p>
-<br>
-<h3>Ilość wszystkich : 22222222222</h3>
-<br>
-<h3>Pomóż w: osoby </h3>
+        <button>Search</button>
+    </form>
+    <br>
+    <br>
+    <h3>Bądź na bierząco: </h3>
+    <br>
+    <h4>Dzisiaj imieniny obchodzi: </h4>
+    <p>Someone</p>
+    <br>
+    <h4>Rocznica śmierci</h4>
+    <p>Someone</p>
+    <h3>Last add person: </h3>
+    {% for person in last_create_members %}
+        <p>{{ person }}</p>
+    {% endfor %}
+
+    <br>
+    <h3>Ilość wszystkich : {% count_members %}</h3>
+    <br>
+    <h3>Pomóż w: osoby </h3>
 
 
-
-
-
-
-
-
-
-
-</body>
-</html>
+{% endblock %}
