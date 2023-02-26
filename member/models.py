@@ -12,7 +12,7 @@ class Person(models.Model):
     ]
 
     # personal data
-    foename = models.CharField(max_length=70)
+    forename = models.CharField(max_length=70)
     middle_name = models.CharField(max_length=70, null=True, blank=True)
     second_name = models.CharField(max_length=100)
     maiden_name = models.CharField(max_length=100, null=True, blank=True)
@@ -34,9 +34,10 @@ class Person(models.Model):
     is_oldest_ancestor = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
+    is_check = models.BooleanField(default=False)
+
     def __str__(self):
-        #return f"{self.name} {self.second_name}"
-        return self.aka()
+        return self.name()
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'pk': self.pk})
@@ -57,6 +58,7 @@ class Person(models.Model):
     def half_siblings(self):
         return Person.objects.filter(~Q(id=self.id), Q(~Q(father=None), ~Q(mother=self.mother), father=self.father) |\
                                      Q(~Q(mother=None), ~Q(father=self.father), mother=self.mother))
+
     def count_half_siblings(self):
         return self.half_siblings().count()
 
@@ -85,22 +87,8 @@ class Person(models.Model):
         return grandparents
 
     def name(self):
-        return f"{self.foename} {self.middle_name} {self.second_name}"
-    def aka(self):
-        """
-
-        """
-        aka_text = f"{self.name} {self.second_name}:"
-        father = self.father
-
-        for _ in range(3):
-            if father:
-                aka_text += f" {father.name}"
-                father = father.father
-            else:
-                break
-
-        return aka_text
+        " name_middleName_second_name_(maiden_name)"
+        return f"{self.forename} {self.middle_name if self.middle_name else ''} {self.second_name}"
 
     def count_children(self):
         children = self.father_of_children.count()
