@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Q
 
 
 class Person(models.Model):
@@ -11,7 +12,8 @@ class Person(models.Model):
     ]
 
     # personal data
-    name = models.CharField(max_length=70)
+    foename = models.CharField(max_length=70)
+    middle_name = models.CharField(max_length=70, null=True, blank=True)
     second_name = models.CharField(max_length=100)
     maiden_name = models.CharField(max_length=100, null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -53,7 +55,10 @@ class Person(models.Model):
         return sibling
 
     def half_siblings(self):
-        ...
+        return Person.objects.filter(~Q(id=self.id), Q(~Q(father=None), ~Q(mother=self.mother), father=self.father) |\
+                                     Q(~Q(mother=None), ~Q(father=self.father), mother=self.mother))
+    def count_half_siblings(self):
+        return self.half_siblings().count()
 
     def grandparents_mother_side(self):
         """
@@ -79,6 +84,8 @@ class Person(models.Model):
             if grandpa:     grandparents.append(grandpa)
         return grandparents
 
+    def name(self):
+        return f"{self.foename} {self.middle_name} {self.second_name}"
     def aka(self):
         """
 

@@ -136,3 +136,28 @@ class PersonTest(TestCase):
 
         self.assertEqual(len(probatan.grandparents_mother_side()), 2)
 
+    def test_half_siblings(self):
+        mother = Person.objects.create(**create_fake_person_payload(gender='F'))
+        father = Person.objects.create(**create_fake_person_payload(gender='M'))
+
+        probant = Person.objects.create(**create_fake_person_payload(mother=mother, father=father))
+
+        # create only father childs
+        father_child_one = Person.objects.create(**create_fake_person_payload(name='Ala',father=father))
+        father_child_two = Person.objects.create(**create_fake_person_payload(name='Tom',father=father))
+
+        # create only mother child
+        mother_child_one = Person.objects.create(**create_fake_person_payload(name='Ash',mother=mother))
+
+        # create common child
+        common_child = Person.objects.create(**create_fake_person_payload(name='Mat', mother=mother, father=father))
+
+        self.assertEqual(probant.count_half_siblings() , 3)
+
+        half_brother = probant.half_siblings()
+
+        self.assertFalse(half_brother.filter(id=common_child.id))
+        self.assertTrue(half_brother.filter(id=mother_child_one.id))
+
+        #self.assertFalse(half_brother.exist)
+
