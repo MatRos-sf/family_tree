@@ -1,12 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% for person in object_list  %}
-        <p>{{ person }}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "member/base.html" %}
+{% load own_tags %}
+
+{% block content %}
+    <main class="container">
+        <h3>We found: </h3>
+        <li class="list-group list-group-flush">
+            {% for person in object_list  %}
+                <a href="{{ person.get_absolute_url }}" class="list-group-item">
+                    {% include "member/card.html" with person=person %}
+                </a>
+            {% endfor %}
+        </li>
+
+    </main>
+
+{% endblock %}
