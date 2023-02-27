@@ -1,44 +1,39 @@
 {% extends "member/base.html" %}
 {% load own_tags %}
 
+{% block title %}Home{% endblock %}
 {% block content %}
 
 <main class="container">
-
-</main>
+    <br><br>
     <figure class="text-center">
       <blockquote class="blockquote">
         <p>{% family_quote%}</p>
       </blockquote>
     </figure>
-    <h1>Witajcie w rodzinie {{ family }}</h1>
-    <br>
-    <br>
-    <h3>Odnajdź swoich przodków </h3>
-    <form action="{% url 'search_results' %}" method="get">
+
+    <br><hr><br>
+    <h1 class="text-center">Welcome to the website about the {{ family }} family. </h1>
+    <br><hr><br>
+    <h3 class="text-center">Find your ancestor.</h3>
+    <form action="{% url 'search_results' %}" method="get" class="text-center">
         <label for="site-search">Search the site:</label>
         <input type="search" id="site-search" name="q" placeholder="Name or second name...">
-
         <button>Search</button>
     </form>
-    <br>
-    <br>
-    <h3>Bądź na bierząco: </h3>
-    <br>
-    <h4>Dzisiaj imieniny obchodzi: </h4>
-    <p>Someone</p>
-    <br>
-    <h4>Rocznica śmierci</h4>
-    <p>Someone</p>
-    <h3>Last add person: </h3>
+    <h3 class="text-center">We have {% count_members %} members.</h3>
+    <br><hr><br>
+    <h3 class="text-center">Last added: </h3>
+    <ul class="list-group">
     {% for person in last_create_members %}
-        <p>{{ person }}</p>
+        <a href="{{ person.get_absolute_url }}" class="list-group-item">
+            {{ person }}
+        </a>
     {% endfor %}
+    </ul>
+    <br><hr><br>
 
-    <br>
-    <h3>Ilość wszystkich : {% count_members %}</h3>
-    <br>
-    <h3>Pomóż w: osoby </h3>
 
+</main>
 
 {% endblock %}
