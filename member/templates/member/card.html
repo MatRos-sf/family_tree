@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="card mb-3 {% if person.blood_main_family %}border-danger{% else %}border-primary{% endif %}" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="https://solisradius.pl/wp-content/uploads/2021/04/person-icon.png" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h6 class="card-title">{% if person %}{{ person }}{% else %}?{% endif %}</h6>
+<!--        <p class="card-text">;)</p>-->
+      </div>
+    </div>
+  </div>
+</div>

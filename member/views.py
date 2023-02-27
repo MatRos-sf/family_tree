@@ -46,7 +46,7 @@ class SearchResultView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        object_list = Person.objects.filter(Q(name__icontains=query) | Q(second_name__icontains=query))
+        object_list = Person.objects.filter(Q(forename__icontains=query) | Q(second_name__icontains=query))
         return object_list
 
 def find_oldest_ancestor(person):

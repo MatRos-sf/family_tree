@@ -37,10 +37,10 @@ class Person(models.Model):
     is_check = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name()
+        return self.forename + ' ' + self.second_name
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'pk': self.pk})
+        return reverse('detail', args=[str(self.id)])
 
     def clean(self):
         if self.is_oldest_ancestor:
@@ -88,7 +88,8 @@ class Person(models.Model):
 
     def name(self):
         " name_middleName_second_name_(maiden_name)"
-        return f"{self.forename} {self.middle_name if self.middle_name else ''} {self.second_name}"
+        maiden_name = " (" + self.maiden_name + ")" if self.maiden_name else None
+        return f"{self.forename} {self.middle_name if self.middle_name else ''} {self.second_name}"+f"{maiden_name if maiden_name else ''}"
 
     def count_children(self):
         children = self.father_of_children.count()
@@ -101,6 +102,9 @@ class Person(models.Model):
             grandchildren += child.count_children()
 
         return grandchildren
+
+
+
 
 
 
