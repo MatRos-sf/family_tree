@@ -5,7 +5,8 @@
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h6 class="card-title">{% if person %}{{ person }}{% else %}?{% endif %}</h6>
+        <h6 class="card-title">{% if person %}<a href="{{ person.get_absolute_url }}">{{ person }}</a>{% else %}?{% endif %}</h6>
+
 <!--        <p class="card-text">;)</p>-->
       </div>
     </div>

@@ -48,11 +48,14 @@ class Person(models.Model):
             if existing.exists() and existing.first().id != self.id:
                 raise ValidationError("Only one instance can have is_oldest_ancestor=True")
 
-    def siblings(self):
+    def get_siblings(self):
         """
         return Siblings ( sisters or brothers) share the same biological parents.
         """
-        sibling = Person.objects.filter(mother=self.mother, father=self.father).exclude(id=self.id)
+        if self.mother and self.father:
+            sibling = Person.objects.filter(mother=self.mother, father=self.father).exclude(id=self.id)
+        else:
+            return None
         return sibling
 
     def half_siblings(self):
@@ -72,6 +75,8 @@ class Person(models.Model):
             grandpa = self.mother.father
             if grandma:     grandparents.append(grandma)
             if grandpa:     grandparents.append(grandpa)
+        else:
+            None
         return grandparents
 
     def grandparents_father_side(self):
@@ -86,6 +91,10 @@ class Person(models.Model):
             if grandpa:     grandparents.append(grandpa)
         return grandparents
 
+    def grandfather_mother_side(self):
+        grandfather = self.mother.father
+        return grandfather if grandfather else None
+
     def name(self):
         " name_middleName_second_name_(maiden_name)"
         maiden_name = " (" + self.maiden_name + ")" if self.maiden_name else None
@@ -94,6 +103,9 @@ class Person(models.Model):
     def count_children(self):
         children = self.father_of_children.count()
         return children
+
+    def get_children(self):
+        return Person.objects.filter(Q(mother=self) | Q(father=self))
 
     def count_grandchildren(self):
         children = self.father_of_children.all()

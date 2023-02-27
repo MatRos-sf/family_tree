@@ -62,61 +62,127 @@
 
     <!-- -->
     <hr>
+    <div class="container {% if object.is_oldest_ancestor %}bg-danger bg-opacity-25{% endif %}">
+        <h1 class="blog-post-title mb-1 text-center"> Info </h1>
 
-    <div class="container text-center">
-        <h1 class="blog-post-title mb-1"> Rodzina </h1>
-        <p>Partner: {% if object.partner %}{{ object.partner }}{% else %}{% endif%}</p>
-        <p>d</p>
-        <p>Ojciec: {% if object.father %}<a href="">{{ object.father }}</a> {% else %}{% endif%}</p>
-        <p>Matka: {% if object.mother %}{{ object.mother }}{% else %}{% endif%}</p>
-        <p>Dzieci: </p>
+        <dl class="row">
+            <dt class="col-sm-3">Forename</dt>
+            <dd class="col-sm-9">{{ object.forename }}</dd>
+            {% if object.middle_name %}
+                <dt class="col-sm-3">Middle Name</dt>
+                <dd class="col-sm-9">{{ object.middle_name }}</dd>
+            {% endif %}
+            <dt class="col-sm-3">Second Name</dt>
+            <dd class="col-sm-9">{{ object.second_name }}</dd>
+            {% if object.maiden_name %}
+                <dt class="col-sm-3">Maiden Name</dt>
+                <dd class="col-sm-9">{{ object.maiden_name }}</dd>
+            {% endif %}
+
+            {% if object.gender %}
+                <dt class="col-sm-3">Gender</dt>
+                <dd class="col-sm-9">{% if object.gender == 'F' %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-female" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z"/>
+                    </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-male" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+                        </svg>
+                    {% endif %}
+                </dd>
+            {% endif %}
+            {% if object.birth_date %}
+                <dt class="col-sm-3">Birth Date</dt>
+                <dd class="col-sm-9">{{ object.birth_date }}</dd>
+            {% endif %}
+            {% if object.death_date %}
+                <dt class="col-sm-3">Death Date</dt>
+                <dd class="col-sm-9">{{ object.death_date }}</dd>
+            {% endif %}
+
+        </dl>
+    </div>
+    <hr>
+
+
+        <div class="container">
+            <h1 class="blog-post-title mb-1 text-center"> Family </h1>
+
+            <dl class="row">
+                {% if object.partner %}
+                    <dt class="col-sm-3">Partner</dt>
+                    <dd class="col-sm-9">
+                        <a href="{{ object.partner.get_absolute_url }}">
+                            {{ object.partner }}
+                        </a>
+                    </dd>
+                {% endif %}
+
+                {% if object.mother %}
+                    <dt class="col-sm-3">Mother</dt>
+                    <dd class="col-sm-9">
+                        <a href="{{ object.mother.get_absolute_url }}">
+                            {{ object.mother }}
+                        </a>
+                    </dd>
+                {% endif %}
+
+                {% if object.father %}
+                    <dt class="col-sm-3">Father</dt>
+                    <dd class="col-sm-9">
+                        <a href="{{ object.father.get_absolute_url }}">
+                            {{ object.father }}
+                        </a>
+                    </dd>
+                {% endif %}
+                {% with obj=object.get_children %}
+                {% if obj %}
+                    <dt class="col-sm-3">Children</dt>
+                    <dd class="col-sm-9">
+                    {% for p in obj %}
+                        <a href="{{ p.get_absolute_url }}">
+                            {{ p }}{% if not forloop.last %},{% endif %}
+                        </a>
+
+                    {% endfor %}
+                    </dd>
+                {% endif %}
+                {% endwith %}
+
+                {% with obj=object.get_siblings %}
+                    {% if obj %}
+                        <dt class="col-sm-3">Siblings</dt>
+                        <dd class="col-sm-9">
+                            {% for p in obj %}
+                                <a href="{{ p.get_absolute_url }}">
+                                    {{ p }}{% if not forloop.last %},{% endif %}
+                                </a>
+                            {% endfor %}
+                        </dd>
+                    {% endif %}
+                {% endwith %}
+
+                {% with obj=object.half_siblings %}
+                    {% if obj %}
+                        <dt class="col-sm-3"> Half Siblings</dt>
+                        <dd class="col-sm-9">
+                            {% for p in obj %}
+                                <a href="{{ p.get_absolute_url }}">
+                                    {{ p }}{% if not forloop.last %},{% endif %}
+                                </a>
+                            {% endfor %}
+                        </dd>
+                    {% endif %}
+                {% endwith %}
+            </dl>
+
+
 
     </div>
         <hr>
 
-    <div class="container text-center">
-        <h1 class="blog-post-title mb-1"> Info </h1>
-        <p>Imie</p>
-        <p>Drugie imię</p>
-        <p>Nazwisko</p>
-        <p>Panieńskie Nazwisko</p>
-        <p>Data urodzin</p>
-        <p>Data śmierci</p>
-        <p>Gender</p>
 
-    </div>
-    <hr>
-    <div class="row mb-3 text-center">
-      <div class="col themed-grid-col">Name</div>
-      <div class="col-4 themed-grid-col">.col-4</div>
-      <div class="col-4 themed-grid-col">.col-4</div>
-    </div>
-
-
-    <dl class="row">
-  <dt class="col-sm-3">Description lists</dt>
-  <dd class="col-sm-9">A description list is perfect for defining terms.</dd>
-
-  <dt class="col-sm-3">Term</dt>
-  <dd class="col-sm-9">
-    <p>Definition for the term.</p>
-    <p>And some more placeholder definition text.</p>
-  </dd>
-
-  <dt class="col-sm-3">Another term</dt>
-  <dd class="col-sm-9">This definition is short, so no extra paragraphs or anything.</dd>
-
-  <dt class="col-sm-3 text-truncate">Truncated term is truncated</dt>
-  <dd class="col-sm-9">This can be useful when space is tight. Adds an ellipsis at the end.</dd>
-
-  <dt class="col-sm-3">Nesting</dt>
-  <dd class="col-sm-9">
-    <dl class="row">
-      <dt class="col-sm-4">Nested definition list</dt>
-      <dd class="col-sm-8">I heard you like definition lists. Let me put a definition list inside your definition list.</dd>
-    </dl>
-  </dd>
-</dl>
 </main>
 
 
