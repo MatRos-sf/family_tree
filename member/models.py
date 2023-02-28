@@ -91,9 +91,6 @@ class Person(models.Model):
             if grandpa:     grandparents.append(grandpa)
         return grandparents
 
-    def grandfather_mother_side(self):
-        grandfather = self.mother.father
-        return grandfather if grandfather else None
 
     def name(self):
         " name_middleName_second_name_(maiden_name)"
