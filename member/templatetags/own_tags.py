@@ -19,3 +19,4 @@ def family_quote() -> str:
 
 
     return choice(quote)
+

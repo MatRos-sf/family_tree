@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
 from django.urls import reverse_lazy
 from django.db.models import Q
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Person
 from .forms import PersonForm
@@ -18,13 +18,13 @@ class DetailPersonView(DetailView):
     model = Person
     template_name = 'member/member_detail.html'
 
-class DeletePersonView(DeleteView):
+class DeletePersonView(LoginRequiredMixin, DeleteView):
 
     model = Person
     success_url = reverse_lazy('home')
     template_name = 'member/member_confirm_delete.html'
 
-class UpdatePersonView(UpdateView):
+class UpdatePersonView(LoginRequiredMixin, UpdateView):
 
     model = Person
     form_class = PersonForm
