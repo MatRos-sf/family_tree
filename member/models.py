@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models import Q
 
 
+
 class Person(models.Model):
     GENDER_CHOICE = [
         ('M', 'Male'),
@@ -18,8 +19,9 @@ class Person(models.Model):
     maiden_name = models.CharField(max_length=100, null=True, blank=True)
 
     birth_date = models.DateField(null=True, blank=True)
-    #birth_date = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
     death_date = models.DateField(null=True, blank=True)
+    is_life = models.BooleanField(default=True)
+
     gender = models.CharField(
         max_length=1,
         choices=GENDER_CHOICE,
@@ -37,6 +39,8 @@ class Person(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     is_check = models.BooleanField(default=False)
+
+    image_profile = models.ImageField(default='default.png')
 
     def __str__(self):
         return self.forename + ' ' + self.second_name
@@ -93,7 +97,6 @@ class Person(models.Model):
             if grandpa:     grandparents.append(grandpa)
         return grandparents
 
-
     def name(self):
         " name_middleName_second_name_(maiden_name)"
         maiden_name = " (" + self.maiden_name + ")" if self.maiden_name else None
@@ -114,9 +117,11 @@ class Person(models.Model):
 
         return grandchildren
 
-
-
-
+    def check_is_life(self):
+        """Check person is life"""
+        if self.is_life and self.death_date:
+            self.is_life = False
+        return self.is_life
 
 
 

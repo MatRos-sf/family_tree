@@ -1,13 +1,16 @@
 <div class="card mb-3 {% if person.blood_main_family %}border-danger{% else %}border-primary{% endif %}" style="max-width: 540px;">
   <div class="row g-0">
     <div class="col-md-4">
-      <img src="https://solisradius.pl/wp-content/uploads/2021/04/person-icon.png" class="img-fluid rounded-start" alt="...">
+      {% if person %}
+        <img src="{{ person.image_profile.url }}" class="img-fluid rounded-start" alt="...">
+      {% else %}
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="img-fluid rounded-start" alt="...">
+      {% endif %}
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h6 class="card-title">{% if person %}<a href="{{ person.get_absolute_url }}">{{ person }}</a>{% else %}?{% endif %}</h6>
 
-<!--        <p class="card-text">;)</p>-->
       </div>
     </div>
   </div>
