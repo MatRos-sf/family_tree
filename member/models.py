@@ -64,6 +64,11 @@ class Person(models.Model):
             return None
         return sibling
 
+    def count_siblings(self) -> int:
+        """ Count only siblings share the same biological parents"""
+        siblings = self.get_siblings()
+        return siblings.count() if siblings else 0
+
     def half_siblings(self):
         return Person.objects.filter(~Q(id=self.id), Q(~Q(father=None), ~Q(mother=self.mother), father=self.father) |\
                                      Q(~Q(mother=None), ~Q(father=self.father), mother=self.mother))
@@ -71,6 +76,8 @@ class Person(models.Model):
     def count_half_siblings(self):
         return self.half_siblings().count()
 
+    def count_all_siblings(self):
+        return sum((self.count_siblings(), self.count_half_siblings()))
     def grandparents_mother_side(self):
         """
         Grandparents mother side
