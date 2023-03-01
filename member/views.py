@@ -14,6 +14,18 @@ class CreatePersonView(CreateView):
     form_class = PersonForm
     template_name = 'member/member_create.html'
 
+    # def form_valid(self, form):
+    #     # birth
+    #     birth_date = form.cleaned_data['birth']
+    #     birth = Event.objects.create(
+    #         event='birth',
+    #         date = birth_date
+    #     )
+    #     peron = form.save(commit=False)
+    #     peron.birth_date= birth
+    #     peron.save()
+    #     return super().form_valid(form)
+
 class DetailPersonView(DetailView):
     model = Person
     template_name = 'member/member_detail.html'

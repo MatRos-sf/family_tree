@@ -16,7 +16,9 @@ class Person(models.Model):
     middle_name = models.CharField(max_length=70, null=True, blank=True)
     second_name = models.CharField(max_length=100)
     maiden_name = models.CharField(max_length=100, null=True, blank=True)
+
     birth_date = models.DateField(null=True, blank=True)
+    #birth_date = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
     death_date = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=1,
@@ -111,8 +113,6 @@ class Person(models.Model):
             grandchildren += child.count_children()
 
         return grandchildren
-
-
 
 
 
