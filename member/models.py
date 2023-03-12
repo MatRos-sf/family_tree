@@ -1,9 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.utils import timezone
 from django.db.models import Q
-
 
 
 class Person(models.Model):
